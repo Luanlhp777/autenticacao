@@ -1,2 +1,13 @@
-node_modules/
-.env
+# Dependências
+backend/node_modules/
+frontend/node_modules/
+
+# Variáveis de ambiente
+backend/.env
+frontend/.env
+
+# Arquivos de build
+frontend/dist/
+
+# Logs
+*.log

@@ -3,7 +3,8 @@ import { Router } from 'express';
 import {
     cadastrar,
     login,
-    listarUsuarios
+    listarUsuarios,
+    me
 
 }
     from '../controllers/authController.js';
@@ -15,6 +16,7 @@ const router = Router()
 router.post('/usuarios', cadastrar);
 router.post('/login', login);
 router.get('/usuarios', autenticar, listarUsuarios);
+router.get('/auth/me', autenticar, me);
 
 
 

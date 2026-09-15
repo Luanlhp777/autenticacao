@@ -124,3 +124,8 @@ export async function listarUsuarios(req, res) {
     }
 
 }
+
+export async function me(req, res) {
+
+    return res.json({ usuario: req.usuario })
+}
