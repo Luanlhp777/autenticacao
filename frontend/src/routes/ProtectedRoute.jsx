@@ -6,8 +6,8 @@ export default function ProtectedRoute({ isAuth, carregando, children }){
         return <div className='loading'>Verificando autenticação...</div>
     }
 
-    if(isAuth){
-        return <Navigate to="login" replace />
+    if(!isAuth){
+        return <Navigate to="/login" replace />
     }
 
     return children;

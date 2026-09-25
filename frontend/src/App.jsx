@@ -30,14 +30,18 @@ function Rotas() {
                 const response = await validarToken(token);
                 setUsuarioLogado(response.usuario);
                 setIsAuth(true);
+
             } catch {
                 localStorage.removeItem("token");
                 localStorage.removeItem("usuario");
                 setIsAuth(false);
+
             } finally {
                 setCarregando(false);
             }
+
         }
+
         verificarSessao();
     }, []);
 
@@ -52,9 +56,19 @@ function Rotas() {
     return (
         <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<Login setIsAuth={setIsAuth} setUsuarioLogado={setUsuarioLogado} />} />
+            <Route
+                path="/login"
+                element={<Login setIsAuth={setIsAuth} setUsuarioLogado={setUsuarioLogado} />}
+            />
             <Route path="/cadastro" element={<Cadastro />} />
-            <Route path="/sucesso" element={<ProtectedRoute isAuth={isAuth} carregando={carregando}><Sucesso usuario={usuarioLogado} onLogout={logout} /></ProtectedRoute>} />
+            <Route
+                path="/sucesso"
+                element={
+                    <ProtectedRoute isAuth={isAuth} carregando={carregando}>
+                        <Sucesso usuario={usuarioLogado} onLogout={logout} />
+                    </ProtectedRoute>
+                }
+            />
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
     );

@@ -19,6 +19,6 @@ export function autenticar(req, res, next) {
 
     } catch (erro) {
         console.error(erro)
-        return res.status(500).json({ mensagem: 'Token inválido ou expirado' })
+        return res.status(401).json({ mensagem: 'Token inválido ou expirado' })
     }
 }

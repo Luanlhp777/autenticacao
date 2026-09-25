@@ -15,13 +15,13 @@ export default function Cadastro() {
         setMensagem("");
         setErro("");
 
-        if (!usuario.trim || !senha) {
+        if (!usuario || !senha) {
             setErro("Preencha todos os campos");
             return;
         }
 
         try {
-            const response = await cadastrar(usuario.trim(), senha);
+            const response = await cadastrar(usuario, senha);
             setMensagem(response.mensagem);
             setTimeout(() => navigate("/login"), 800);
         } catch (erro) {
@@ -31,7 +31,9 @@ export default function Cadastro() {
 
     return (
         <main className="page-shell">
+
             <section className="auth-card">
+
                 <div className="brand-icon"><UserPlus size={28} /></div>
                 <p className="eyebrow">NOVO ACESSO</p>
                 <h1>Cadastro</h1>
@@ -42,9 +44,11 @@ export default function Cadastro() {
                         Usuário
                         <div className="input-wrap">
                             <User size={18} />
-
-                            <input placeholder="Escolha um usuário" value={usuario} onChange={(e) => setUsuario(e.target.value)} />
-
+                            <input
+                                placeholder="Escolha um usuário"
+                                value={usuario}
+                                onChange={(e) => setUsuario(e.target.value)}
+                            />
                         </div>
                     </label>
 
@@ -52,17 +56,23 @@ export default function Cadastro() {
                         Senha
                         <div className="input-wrap">
                             <LockKeyhole size={18} />
-                            <input type="password" placeholder="Crie uma senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
+                            <input
+                                type="password"
+                                placeholder="Crie uma senha"
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                            />
                         </div>
                     </label>
 
                     {erro && <p className="error">{erro}</p>}
-                    {mensagem && <p className="sucess-msg">{mensagem}</p>}
+                    {mensagem && <p className="success-msg">{mensagem}</p>}
 
                     <button className="primary" type="submit">Cadastrar</button>
                 </form>
 
                 <button className="secondary" onClick={() => navigate("/login")}>Voltar para Login</button>
+
             </section>
         </main>
     );

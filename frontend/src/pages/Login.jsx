@@ -9,8 +9,8 @@ export default function Login({ setIsAuth, setUsuarioLogado }) {
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
 
-    async function handleSubmit(event) {
-        event.preventDefault();
+    async function handleLogin(e) {
+        e.preventDefault();
         setErro("");
 
         try {
@@ -28,17 +28,21 @@ export default function Login({ setIsAuth, setUsuarioLogado }) {
     return (
         <main className="page-shell">
             <section className="auth-card">
-                <div className="brand-icon"><LogIn size={18} /></div>
+                <div className="brand-icon"><LogIn size={28} /></div>
                 <p className="eyebrow">ÁREA RESTRITA</p>
                 <h1>Login</h1>
                 <p className="subtitle">Entre para acessar a rota protegida.</p>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleLogin}>
                     <label>
                         Usuário
                         <div className="input-wrap">
                             <User size={18} />
-                            <input placeholder="Digite seu usuário" value={usuario} onChange={(e) => setUsuario(e.target.value)} />
+                            <input
+                                placeholder="Digite seu usuário"
+                                value={usuario}
+                                onChange={(e) => setUsuario(e.target.value)}
+                            />
                         </div>
                     </label>
 
@@ -46,7 +50,12 @@ export default function Login({ setIsAuth, setUsuarioLogado }) {
                         Senha
                         <div className="input-wrap">
                             <LockKeyhole size={18} />
-                            <input type="password" placeholder="Digite sua senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
+                            <input
+                                type="password"
+                                placeholder="Digite sua senha"
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                            />
                         </div>
                     </label>
 
