@@ -9,8 +9,8 @@ export default function Login({ setIsAuth, setUsuarioLogado }) {
     const [erro, setErro] = useState("");
     const navigate = useNavigate();
 
-    async function handleLogin(e) {
-        e.prevenDefaut();
+    async function handleSubmit(event) {
+        event.preventDefault();
         setErro("");
 
         try {
@@ -33,7 +33,7 @@ export default function Login({ setIsAuth, setUsuarioLogado }) {
                 <h1>Login</h1>
                 <p className="subtitle">Entre para acessar a rota protegida.</p>
 
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleSubmit}>
                     <label>
                         Usuário
                         <div className="input-wrap">

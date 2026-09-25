@@ -11,21 +11,21 @@ export default function Cadastro() {
     const navigate = useNavigate();
 
     async function handleCadastro(e) {
-        e.preventDefaut();
+        e.preventDefault();
         setMensagem("");
         setErro("");
 
-        if (!usuario || !senha) {
+        if (!usuario.trim || !senha) {
             setErro("Preencha todos os campos");
             return;
         }
 
         try {
-            const response = await cadastrar(usuario, senha);
+            const response = await cadastrar(usuario.trim(), senha);
             setMensagem(response.mensagem);
             setTimeout(() => navigate("/login"), 800);
         } catch (erro) {
-            setErro(erro.mensagem);
+            setErro(erro.message);
         }
     }
 
