@@ -1,6 +1,10 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { pool } from '../config/db.js';
+import {
+    buscarPorUsuario,
+    criar,
+    listar
+} from "../models/usuario.model.js";
 
 export async function cadastrar(req, res) {
     //console.log('Body recebido:', req.body);
@@ -21,12 +25,9 @@ export async function cadastrar(req, res) {
             })
         }
 
-        const [existentes] = await pool.query(
-            'SELECT id FROM usuarios WHERE usuario = ? LIMIT 1',
-            [usuario]
-        )
+        const existente = await buscarPorUsuario(usuario);
 
-        if (existentes.length > 0) {
+        if (existente) {
             return res.status(409).json({
                 mensagem: 'Usuário já cadastrado'
             })
@@ -34,15 +35,12 @@ export async function cadastrar(req, res) {
 
         const senhaHash = await bcrypt.hash(senha, 10) // PEGA A SENHA E CRIPTOGRAFA.
 
-        const [resultado] = await pool.query(
-            'INSERT INTO usuarios (usuario, senha) VALUES(?, ?)',
-            [usuario, senhaHash]
-        );
+        const novoUsuario = await criar(usuario, senhaHash);
 
         return res.status(201).json({
             mensagem: 'Usuário cadastrado com sucesso.',
-            usuario: { id: resultado.insertId, usuario }
-        })
+            usuario: novoUsuario
+        });
 
     } catch (erro) {
 
@@ -63,30 +61,23 @@ export async function login(req, res) {
 
             return res.status(400).json({
                 mensagem: 'Usuário e senha são obrigatórios'
-            })
+            });
         }
 
-        const [usuarios] = await pool.query(
-            'SELECT id, usuario, senha FROM usuarios WHERE usuario = ? LIMIT 1',
-            [usuario]
-        )
+        const encontrado = await buscarPorUsuario(usuario);
 
-        if (usuarios.length === 0) {
-
+        if (!encontrado) {
             return res.status(401).json({
                 mensagem: 'Usuário ou senha inválidos'
-            })
-
+            });
         }
 
-        const encontrado = usuarios[0]
         const senhaValida = await bcrypt.compare(senha, encontrado.senha) // COMPARANDO A SENHA
 
         if (!senhaValida) {
-
             return res.status(401).json({
                 mensagem: 'Usuário ou senha inválidos'
-            })
+            });
         }
 
         const token = jwt.sign(
@@ -110,22 +101,20 @@ export async function login(req, res) {
 
 }
 
+export async function me(req, res) {
+
+    return res.json({ usuario: req.usuario })
+}
+
 export async function listarUsuarios(req, res) {
 
     try {
-        const [usuarios] = await pool.query(
-            'SELECT id, usuario, criado_em FROM usuarios ORDER BY id'
-        );
+        const usuarios = await listar();
+
         return res.json(usuarios)
 
     } catch (erro) {
         console.error(erro)
         return res.status(500).json({ mensagem: 'Erro ao listar usuários' })
     }
-
-}
-
-export async function me(req, res) {
-
-    return res.json({ usuario: req.usuario })
-}
+};
